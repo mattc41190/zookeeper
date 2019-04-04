@@ -119,11 +119,11 @@ interfaces:
 
 The **Watcher** interface is defined by the ZooKeeper Java API.
 ZooKeeper uses it to communicate back to its container. It supports only one method, `process()`,
-and ZooKeeper uses it to communicates generic events that the main thread would be interested in,
+and ZooKeeper uses it to communicate generic events that the main thread would be interested in,
 such as the state of the ZooKeeper connection or the ZooKeeper session. The Executor in this example simply
 forwards those events down to the DataMonitor to decide what to do with them. It does this simply to illustrate
 the point that, by convention, the Executor or some Executor-like object "owns" the ZooKeeper connection, but it is
-free to delegate the events to other events to other objects. It also uses this as the default channel on which
+free to delegate the events to other objects. It also uses this as the default channel on which
 to fire watch events. (More on this later.)
 
 
@@ -133,7 +133,7 @@ to fire watch events. (More on this later.)
 
 
 The **DataMonitorListener**
-interface, on the other hand, is not part of the the ZooKeeper API. It is a completely custom interface,
+interface, on the other hand, is not part of the ZooKeeper API. It is a completely custom interface,
 designed for this sample application. The DataMonitor object uses it to communicate back to its container, which
 is also the Executor object. The DataMonitorListener interface looks like this:
 
@@ -156,7 +156,7 @@ is also the Executor object. The DataMonitorListener interface looks like this:
 
 This interface is defined in the DataMonitor class and implemented in the Executor class.
 When `Executor.exists()` is invoked, the Executor decides whether to start up or shut down per the requirements.
-Recall that the requires say to kill the executable when the znode ceases to _exist_.
+Recall that the requirements say to kill the executable when the znode ceases to _exist_.
 
 When `Executor.closing()` is invoked, the Executor decides whether or not to shut itself down
 in response to the ZooKeeper connection permanently disappearing.
@@ -216,7 +216,6 @@ Here are Executor's implementation of
 
 <a name="sc_DataMonitor"></a>
 
-## The DataMonitor Class
 
 The DataMonitor class has the meat of the ZooKeeper logic. It is mostly
 asynchronous and event driven. DataMonitor kicks things off in the constructor with:
@@ -249,7 +248,7 @@ in the DataMonitor object, is invoked when the asynchronous _setting of the watc
 the Executor registered as the Watcher of the ZooKeeper object.
 
 >As an aside, you might note that the DataMonitor could also register itself as the Watcher
-for this particular watch event. This is new to ZooKeeper 3.0.0 (the support of multiple Watchers). In this
+for this particular watch event. This is new to ZooKeeper 3.0.0 (the supports multiple Watchers). In this
 example, however, DataMonitor does not register as the Watcher.
 
 When the `ZooKeeper.exists()` operation completes on the server, the ZooKeeper API invokes this completion callback on
@@ -412,7 +411,7 @@ function, when DataMonitor gets an event for a znode, it calls`ZooKeeper.exists(
         }
 
         /***************************************************************************
-         * We do process any events ourselves, we just need to forward them on.
+         * We don't process any events ourselves, we just need to forward them on.
          *
          * @see org.apache.zookeeper.Watcher#process(org.apache.zookeeper.proto.WatcherEvent)
          */
@@ -625,4 +624,3 @@ function, when DataMonitor gets an event for a znode, it calls`ZooKeeper.exists(
             }
         }
     }
-
